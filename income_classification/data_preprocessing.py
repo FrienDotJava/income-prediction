@@ -62,19 +62,23 @@ def main():
         test_size = params[stage]['test_size']
         columns_to_drop = params[stage]['columns_to_drop']
         label = params['data']['label_column']
-
-        cleaned_file_path = "./data/cleaned/adult_cleaned.csv"
-        df = load_data(cleaned_file_path)
+        
+        train_data_path = params['data']['train_data_path']
+        test_data_path = params['data']['test_data_path']
+        cleaned_data_path = params['data']['cleaned_data_path']
+        
+        df = load_data(cleaned_data_path)
 
         train_set, test_set = split_data(df, test_size, random_state)
         train_set_scaled, test_set_scaled = scale_data(train_set, test_set)
         train_set_dropped, test_set_dropped = drop_unwanted_column(train_set_scaled, test_set_scaled, columns_to_drop)
         train_set_preprocessed, test_set_preprocessed = encode_columns(train_set_dropped, test_set_dropped, label)
 
-        preprocessed_path = os.path.join('data','preprocessed')
-        os.makedirs(preprocessed_path)
-        save_data(train_set_preprocessed, os.path.join(preprocessed_path,'train.csv'))
-        save_data(test_set_preprocessed, os.path.join(preprocessed_path,'test.csv'))
+        processed_path = os.path.join('data','processed')
+        os.makedirs(processed_path)
+
+        save_data(train_set_preprocessed, train_data_path)
+        save_data(test_set_preprocessed, test_data_path)
     except Exception as e:
         raise Exception(f"Error in main execution: {e}")
 

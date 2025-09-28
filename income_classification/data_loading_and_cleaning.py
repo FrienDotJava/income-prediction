@@ -20,13 +20,14 @@ def main():
         param_path = 'params.yaml'
         params = load_params(param_path)
         file_path = params['data']['raw_data_path']
+        cleaned_path = params['data']['cleaned_data_path']
 
         data = load_data(file_path)
         cleaned_data = clean_data(data)
 
-        cleaned_path = os.path.join('data','cleaned')
-        os.makedirs(cleaned_path)
-        save_data(cleaned_data, os.path.join(cleaned_path, 'adult_cleaned.csv'))
+        interim_path = os.path.join('data','interim')
+        os.makedirs(interim_path)
+        save_data(cleaned_data, cleaned_path)
 
         print("Data loaded and cleaned successfully.")
         print(cleaned_data.head())

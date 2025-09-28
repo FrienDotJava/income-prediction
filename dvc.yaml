@@ -1,0 +1,30 @@
+stages:
+  data_loading_and_cleaning:
+    cmd: python income_classification/data_loading_and_cleaning.py
+    deps:
+    - data/raw
+    - income_classification/data_loading_and_cleaning.py
+    outs:
+    - data/interim
+  data_preprocessing:
+    cmd: python income_classification/data_preprocessing.py
+    deps:
+    - data/interim
+    - income_classification/data_preprocessing.py
+    outs:
+    - data/processed
+  model_training:
+    cmd: python -m income_classification.modeling.model_training
+    deps:
+    - data/processed
+    - income_classification/modeling/model_training.py
+    outs:
+    - models/model.pkl
+  model_evaluation:
+    cmd: python -m income_classification.modeling.model_evaluation
+    deps:
+    - data/processed
+    - income_classification/modeling/model_evaluation.py
+    - models/model.pkl
+    metrics:
+    - models/metrics.json

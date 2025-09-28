@@ -1,6 +1,6 @@
 from sklearn.ensemble import GradientBoostingClassifier
-from helper.data_helper import load_data, split_label
-from helper.param_helper import load_params
+from income_classification.helper.data_helper import load_data, split_label
+from income_classification.helper.param_helper import load_params
 import pandas as pd
 import pickle
 

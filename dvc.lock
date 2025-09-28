@@ -1,0 +1,76 @@
+schema: '2.0'
+stages:
+  data_loading_and_cleaning:
+    cmd: python income_classification/data_loading_and_cleaning.py
+    deps:
+    - path: data/raw
+      hash: md5
+      md5: 3fd59943a92e630e9354fd853dcd47e4.dir
+      size: 4104734
+      nfiles: 2
+    - path: income_classification/data_loading_and_cleaning.py
+      hash: md5
+      md5: 7d7777a6b231a94736287d8df331365c
+      size: 1128
+    outs:
+    - path: data/interim
+      hash: md5
+      md5: b16c0d320fb70d0c913dd9a65fe995ce.dir
+      size: 3020894
+      nfiles: 1
+  data_preprocessing:
+    cmd: python income_classification/data_preprocessing.py
+    deps:
+    - path: data/interim
+      hash: md5
+      md5: b16c0d320fb70d0c913dd9a65fe995ce.dir
+      size: 3020894
+      nfiles: 1
+    - path: income_classification/data_preprocessing.py
+      hash: md5
+      md5: 145e4b86496584188b46afde44f8ead2
+      size: 3585
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 9ff1f65f0d7575e57389e608776be4a1.dir
+      size: 6850506
+      nfiles: 2
+  model_training:
+    cmd: python -m income_classification.modeling.model_training
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 9ff1f65f0d7575e57389e608776be4a1.dir
+      size: 6850506
+      nfiles: 2
+    - path: income_classification/modeling/model_training.py
+      hash: md5
+      md5: 6a93fd3c85fe9b0f5f68d71aa8f1e587
+      size: 1990
+    outs:
+    - path: models/model.pkl
+      hash: md5
+      md5: c976580dfaa25eb2862f67929671114a
+      size: 459611
+  model_evaluation:
+    cmd: python -m income_classification.modeling.model_evaluation
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 9ff1f65f0d7575e57389e608776be4a1.dir
+      size: 6850506
+      nfiles: 2
+    - path: income_classification/modeling/model_evaluation.py
+      hash: md5
+      md5: 7d044088fe1e5e757d64d1e5a1ef70c7
+      size: 2565
+    - path: models/model.pkl
+      hash: md5
+      md5: c976580dfaa25eb2862f67929671114a
+      size: 459611
+    outs:
+    - path: models/metrics.json
+      hash: md5
+      md5: 9dcc4ab72565d9007f9b9495de1c8335
+      size: 127
