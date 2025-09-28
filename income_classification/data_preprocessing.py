@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from helper.data_helper import load_data, save_data
 from helper.param_helper import load_params
 
@@ -23,7 +23,7 @@ def scale_data(train_set: pd.DataFrame, test_set: pd.DataFrame) -> tuple[pd.Data
     try:
         numerical_columns = getNumericalColumns(train_set)
 
-        scaler = StandardScaler()
+        scaler = MinMaxScaler()
 
         train_set[numerical_columns] = scaler.fit_transform(train_set[numerical_columns])
         test_set[numerical_columns] = scaler.transform(test_set[numerical_columns])

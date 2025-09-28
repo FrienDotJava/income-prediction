@@ -28,21 +28,21 @@ stages:
       nfiles: 1
     - path: income_classification/data_preprocessing.py
       hash: md5
-      md5: 145e4b86496584188b46afde44f8ead2
-      size: 3585
+      md5: 3c1e5cdd0ccc42f220acc08ab0a47455
+      size: 3597
     outs:
     - path: data/processed
       hash: md5
-      md5: 9ff1f65f0d7575e57389e608776be4a1.dir
-      size: 6850506
+      md5: 8e935f5de7f3a627a669336275046602.dir
+      size: 5620524
       nfiles: 2
   model_training:
     cmd: python -m income_classification.modeling.model_training
     deps:
     - path: data/processed
       hash: md5
-      md5: 9ff1f65f0d7575e57389e608776be4a1.dir
-      size: 6850506
+      md5: 8e935f5de7f3a627a669336275046602.dir
+      size: 5620524
       nfiles: 2
     - path: income_classification/modeling/model_training.py
       hash: md5
@@ -56,15 +56,15 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 609a589f07ca8bde022e096c61114867
-      size: 4861437
+      md5: a9fabec2724f7a306c2da3044456c52c
+      size: 4884617
   model_evaluation:
     cmd: python -m income_classification.modeling.model_evaluation
     deps:
     - path: data/processed
       hash: md5
-      md5: 9ff1f65f0d7575e57389e608776be4a1.dir
-      size: 6850506
+      md5: 8e935f5de7f3a627a669336275046602.dir
+      size: 5620524
       nfiles: 2
     - path: income_classification/modeling/model_evaluation.py
       hash: md5
@@ -72,10 +72,10 @@ stages:
       size: 2565
     - path: models/model.pkl
       hash: md5
-      md5: 609a589f07ca8bde022e096c61114867
-      size: 4861437
+      md5: a9fabec2724f7a306c2da3044456c52c
+      size: 4884617
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: 91bea77ef2eaf9c319a27533f2dbd89f
-      size: 127
+      md5: 950eee66b2c27771c4177cbbd66857da
+      size: 126
