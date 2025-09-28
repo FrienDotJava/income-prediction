@@ -1,0 +1,16 @@
+
+model_path: "model.pkl"
+metrics_path: "metrics.json"
+data:
+    label_column: 'income'
+    raw_data_path: "./data/raw/adult.csv"
+    train_data_path: "./data/preprocessed/train.csv"
+    test_data_path: "./data/preprocessed/test.csv"
+data_preprocessing:
+    test_size: 0.35
+    random_state: 42
+    columns_to_drop: ['fnlwgt', 'sex', 'native.country', 'education', 'race', 'workclass']
+model_training:
+    n_estimators: 100
+    max_depth: 5
+    learning_rate: 0.1
