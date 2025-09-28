@@ -20,6 +20,11 @@ stages:
     - income_classification/modeling/model_training.py
     outs:
     - models/model.pkl
+    params:
+    - params.yaml:
+      - model_training.n_estimators
+      - model_training.max_depth
+      - model_training.learning_rate
   model_evaluation:
     cmd: python -m income_classification.modeling.model_evaluation
     deps:
@@ -27,4 +32,4 @@ stages:
     - income_classification/modeling/model_evaluation.py
     - models/model.pkl
     metrics:
-    - models/metrics.json
+    - reports/metrics.json
