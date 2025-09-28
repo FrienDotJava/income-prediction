@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "income_classification"
+version = "0.0.1"
+description = "Income prediction from adult census income dataset using DVC Pipeline"
+authors = [
+  { name = "Frendy" },
+]
+
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    
+]
+requires-python = "==3.12.2"
+
+
+[tool.ruff]
+line-length = 99
+src = ["income_classification"]
+include = ["pyproject.toml", "income_classification/**/*.py"]
+
+[tool.ruff.lint]
+extend-select = ["I"]  # Add import sorting
+
+[tool.ruff.lint.isort]
+known-first-party = ["income_classification"]
+force-sort-within-sections = true
+
