@@ -28,12 +28,16 @@ stages:
       nfiles: 1
     - path: income_classification/data_preprocessing.py
       hash: md5
-      md5: 3c1e5cdd0ccc42f220acc08ab0a47455
-      size: 3597
+      md5: 2107866d514e1d6c292b9fa0bdb65754
+      size: 3627
+    params:
+      params.yaml:
+        data_preprocessing.random_state: 42
+        data_preprocessing.test_size: 0.25
     outs:
     - path: data/processed
       hash: md5
-      md5: 8e935f5de7f3a627a669336275046602.dir
+      md5: 656e0142e5bcaa4dda122a5f4766d551.dir
       size: 5620524
       nfiles: 2
   model_training:
@@ -41,7 +45,7 @@ stages:
     deps:
     - path: data/processed
       hash: md5
-      md5: 8e935f5de7f3a627a669336275046602.dir
+      md5: 656e0142e5bcaa4dda122a5f4766d551.dir
       size: 5620524
       nfiles: 2
     - path: income_classification/modeling/model_training.py
@@ -52,30 +56,25 @@ stages:
       params.yaml:
         model_training.learning_rate: 0.05
         model_training.max_depth: 5
-        model_training.n_estimators: 100
+        model_training.n_estimators: 500
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 33e02c7c9e84525d79b5bbb441d89919
-      size: 467243
+      md5: 3637d908fbe38981aa04df092d2a9ffe
+      size: 2262164
   model_evaluation:
     cmd: python -m income_classification.modeling.model_evaluation
     deps:
     - path: data/processed
       hash: md5
-      md5: 8e935f5de7f3a627a669336275046602.dir
+      md5: 656e0142e5bcaa4dda122a5f4766d551.dir
       size: 5620524
       nfiles: 2
     - path: income_classification/modeling/model_evaluation.py
       hash: md5
-      md5: 7d044088fe1e5e757d64d1e5a1ef70c7
-      size: 2565
+      md5: e29118388358419f328766da9f71efde
+      size: 3471
     - path: models/model.pkl
       hash: md5
-      md5: 33e02c7c9e84525d79b5bbb441d89919
-      size: 467243
-    outs:
-    - path: reports/metrics.json
-      hash: md5
-      md5: fe77323c68ad8855a6f049524af73a5d
-      size: 127
+      md5: 3637d908fbe38981aa04df092d2a9ffe
+      size: 2262164

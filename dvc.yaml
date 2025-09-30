@@ -13,6 +13,10 @@ stages:
     - income_classification/data_preprocessing.py
     outs:
     - data/processed
+    params:
+    - params.yaml:
+      - data_preprocessing.test_size
+      - data_preprocessing.random_state
   model_training:
     cmd: python -m income_classification.modeling.model_training
     deps:
@@ -31,5 +35,12 @@ stages:
     - data/processed
     - income_classification/modeling/model_evaluation.py
     - models/model.pkl
-    metrics:
-    - reports/metrics.json
+    # metrics:
+    # - reports/metrics.json
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step
+params:
+- dvclive/params.yaml

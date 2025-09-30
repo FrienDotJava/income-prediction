@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from income_classification.helper.data_helper import load_data, split_label
 from income_classification.helper.param_helper import load_params
 from sklearn.ensemble import GradientBoostingClassifier
-
+from dvclive import Live
 
 def load_model(path : str) -> GradientBoostingClassifier:
     try:
@@ -27,6 +27,8 @@ def evaluate(y_test : pd.Series, y_pred : pd.Series) -> tuple[float, float, floa
         pres = precision_score(y_test, y_pred)
         recall = recall_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred)
+
+        
 
         return acc, pres, recall, f1
     except Exception as e:
@@ -61,6 +63,13 @@ def main():
         model_path = params['model_path']
         metrics_path = params['metrics_path']
 
+        test_size = params['data_preprocessing']['test_size']
+        random_state = params['data_preprocessing']['random_state']
+
+        n_estimators = params['model_training']['n_estimators']
+        max_depth = params['model_training']['max_depth']
+        learning_rate = params['model_training']['learning_rate']
+
         test_data = load_data(test_data_path)
 
         X_test, y_test = split_label(test_data, label)
@@ -72,6 +81,19 @@ def main():
         metrics_dict = to_dict(acc, pres, recall, f1)
 
         save_metrics(metrics_dict,metrics_path)
+
+        with Live(save_dvc_exp=True) as live:
+            live.log_metric("accuracy", acc)
+            live.log_metric("precision", pres)
+            live.log_metric("recall", recall)
+            live.log_metric("f1_score", f1)
+            
+            live.log_param("test_size", test_size)
+            live.log_param("random_state", random_state)
+            live.log_param("n_estimators", n_estimators)
+            live.log_param("max_depth", max_depth)
+            live.log_param("learning_rate", learning_rate)
+            
     except Exception as e:
         raise Exception(f"Error in main execution: {e}")
 

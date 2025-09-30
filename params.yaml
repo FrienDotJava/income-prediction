@@ -8,10 +8,10 @@ data:
     train_data_path: "./data/processed/train.csv"
     test_data_path: "./data/processed/test.csv"
 data_preprocessing:
-    test_size: 0.35
+    test_size: 0.25
     random_state: 42
     columns_to_drop: ['fnlwgt', 'sex', 'native.country', 'education', 'race', 'workclass']
 model_training:
-    n_estimators: 100
+    n_estimators: 500
     max_depth: 5
     learning_rate: 0.05
