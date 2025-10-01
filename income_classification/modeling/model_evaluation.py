@@ -10,9 +10,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import mlflow
 import mlflow.sklearn
+# import dagshub
+# dagshub.init(repo_owner='FrienDotJava', repo_name='income-prediction', mlflow=True)
 
+mlflow.set_tracking_uri("https://dagshub.com/FrienDotJava/income-prediction.mlflow")
 mlflow.set_experiment("income_classification_GB")
-mlflow.set_tracking_uri("http://localhost:5000")
+# mlflow.set_tracking_uri("http://localhost:5000")
 
 def load_model(path : str) -> GradientBoostingClassifier:
     try:
@@ -108,7 +111,8 @@ def main():
 
             mlflow.log_artifact("confusion_matrix.png")
             
-            mlflow.sklearn.log_model(model, "GradientBoostingClassifier")
+            # mlflow.sklearn.log_model(model, name="GradientBoostingClassifier")
+            mlflow.log_artifact(model_path, artifact_path="model")
 
         # with Live(save_dvc_exp=True) as live:
         #     live.log_metric("accuracy", acc)
