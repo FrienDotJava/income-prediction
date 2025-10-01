@@ -1,6 +1,7 @@
 income-env
 models
 reports
+mlruns
 # Data
 /data/
 
