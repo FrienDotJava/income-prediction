@@ -91,6 +91,7 @@ def main():
             acc, pres, recall, f1 = evaluate(y_test, y_pred)
             metrics_dict = to_dict(acc, pres, recall, f1)
 
+            os.makedirs('reports', exist_ok=True) 
             save_metrics(metrics_dict,metrics_path)
 
             mlflow.log_metrics(metrics_dict)
