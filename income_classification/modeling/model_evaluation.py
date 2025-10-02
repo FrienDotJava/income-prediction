@@ -5,7 +5,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, r
 from income_classification.helper.data_helper import load_data, split_label
 from income_classification.helper.param_helper import load_params
 from sklearn.ensemble import GradientBoostingClassifier
-from dvclive import Live
+# from dvclive import Live
 import seaborn as sns
 import matplotlib.pyplot as plt
 import mlflow

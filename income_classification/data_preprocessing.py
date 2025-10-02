@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from helper.data_helper import load_data, save_data
 from helper.param_helper import load_params
-from dvclive import Live
 
 def split_data(df : pd.DataFrame, test_size: float, random_state: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     try:    
