@@ -1,3 +1,4 @@
+import os
 from sklearn.ensemble import GradientBoostingClassifier
 from income_classification.helper.data_helper import load_data, split_label
 from income_classification.helper.param_helper import load_params
@@ -46,6 +47,7 @@ def main():
 
         trained_model = train_model(model, X_train, y_train)
 
+        os.makedirs('models', exist_ok=True) 
         save_model(trained_model, model_path)
     except Exception as e:
         raise Exception(f"Error in main execution: {e}")
