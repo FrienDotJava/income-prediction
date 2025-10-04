@@ -4,7 +4,7 @@ import joblib
 
 @st.cache_resource
 def load_model():
-    return joblib.load("models/pipeline_model.pkl")
+    return joblib.load("pipeline_model.pkl")
 
 model = load_model()
 
