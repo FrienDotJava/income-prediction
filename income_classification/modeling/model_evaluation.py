@@ -6,17 +6,17 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_score, r
 from income_classification.helper.data_helper import load_data, split_label
 from income_classification.helper.param_helper import load_params
 from sklearn.ensemble import GradientBoostingClassifier
-# from dvclive import Live
 import seaborn as sns
 import matplotlib.pyplot as plt
 import mlflow
 import mlflow.sklearn
+from mlflow.models import infer_signature
 # import dagshub
 # dagshub.init(repo_owner='FrienDotJava', repo_name='income-prediction', mlflow=True)
 
 # mlflow.set_tracking_uri("https://dagshub.com/FrienDotJava/income-prediction.mlflow")
 mlflow.set_tracking_uri("http://localhost:5000")
-mlflow.set_experiment("hyperparameter_tuning_GB")
+mlflow.set_experiment("best_model_GB")
 
 def load_model(path : str) -> GradientBoostingClassifier:
     try:
@@ -38,8 +38,6 @@ def evaluate(y_test : pd.Series, y_pred : pd.Series) -> tuple[float, float, floa
         pres = precision_score(y_test, y_pred)
         recall = recall_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred)
-
-        
 
         return acc, pres, recall, f1
     except Exception as e:
@@ -63,9 +61,21 @@ def save_metrics(metrics : dict, path : str) -> None:
     except Exception as e:  
         raise Exception(f"Error saving metrics: {e}")
 
+def save_confusion_matrix(cm, path: str) -> None:
+    try:
+        plt.figure(figsize=(8, 6))
+        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
+        plt.xlabel('Predicted')
+        plt.ylabel('True')
+        plt.title('Confusion Matrix')
+        plt.savefig(path)
+        mlflow.log_artifact(path)
+    except Exception as e:
+        raise Exception(f"Error saving confusion matrix: {e}")
+
 def main():
     try:
-        with mlflow.start_run():
+        with mlflow.start_run() as run:
             param_path = 'params.yaml'
             params = load_params(param_path)
 
@@ -105,28 +115,20 @@ def main():
             })
 
             cm = confusion_matrix(y_test, y_pred)
-            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-            plt.xlabel('Predicted')
-            plt.ylabel('True')
-            plt.title('Confusion Matrix')
-            plt.savefig("confusion_matrix.png")
+            save_confusion_matrix(cm, params['cm_path'])
 
-            mlflow.log_artifact("confusion_matrix.png")
+            mlflow.log_artifact(model_path)
+            mlflow.log_artifact(metrics_path)
             
-            mlflow.sklearn.log_model(model, name="GradientBoostingClassifier")
+            signature = infer_signature(X_test, y_pred)
+
+            mlflow.sklearn.log_model(model, name="GradientBoostingClassifier_bestModel", signature=signature)
             # mlflow.log_artifact(model_path, artifact_path="model")
 
-        # with Live(save_dvc_exp=True) as live:
-        #     live.log_metric("accuracy", acc)
-        #     live.log_metric("precision", pres)
-        #     live.log_metric("recall", recall)
-        #     live.log_metric("f1_score", f1)
-            
-        #     live.log_param("test_size", test_size)
-        #     live.log_param("random_state", random_state)
-        #     live.log_param("n_estimators", n_estimators)
-        #     live.log_param("max_depth", max_depth)
-        #     live.log_param("learning_rate", learning_rate)
+            run_info = {'run_id': run.info.run_id, 'model_name': "GradientBoostingClassifier_bestModel"}
+            reports_path = "reports/run_info.json"
+            with open(reports_path, 'w') as file:
+                json.dump(run_info, file, indent=4)
             
     except Exception as e:
         raise Exception(f"Error in main execution: {e}")

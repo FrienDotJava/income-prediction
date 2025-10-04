@@ -1,6 +1,7 @@
 
 model_path: "./models/model.pkl"
 metrics_path: "./reports/metrics.json"
+cm_path: "confusion_matrix.png"
 data:
     label_column: 'income'
     raw_data_path: "./data/raw/adult.csv"
