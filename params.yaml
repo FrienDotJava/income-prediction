@@ -8,6 +8,7 @@ data:
     cleaned_data_path: "./data/interim/cleaned_data.csv"
     train_data_path: "./data/processed/train.csv"
     test_data_path: "./data/processed/test.csv"
+    dropped_columns_path_train: "./data/interim/dropped_columns_train.csv"
 data_preprocessing:
     test_size: 0.25
     random_state: 42

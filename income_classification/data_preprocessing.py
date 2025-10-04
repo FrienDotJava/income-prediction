@@ -1,8 +1,7 @@
 import pandas as pd
-import numpy as np
 import os
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler
 from helper.data_helper import load_data, save_data
 from helper.param_helper import load_params
 
@@ -51,7 +50,6 @@ def encode_columns(train_set: pd.DataFrame, test_set: pd.DataFrame, label: str) 
     except Exception as e:
         raise Exception(f"Error encoding columns: {e}")
 
-
 def main():
     try:
         param_path = 'params.yaml'
@@ -66,13 +64,16 @@ def main():
         train_data_path = params['data']['train_data_path']
         test_data_path = params['data']['test_data_path']
         cleaned_data_path = params['data']['cleaned_data_path']
-        
+        dropped_columns_path_train = params['data']['dropped_columns_path_train']
+
         df = load_data(cleaned_data_path)
 
         train_set, test_set = split_data(df, test_size, random_state)
-        train_set_scaled, test_set_scaled = scale_data(train_set, test_set)
-        train_set_dropped, test_set_dropped = drop_unwanted_column(train_set_scaled, test_set_scaled, columns_to_drop)
-        train_set_preprocessed, test_set_preprocessed = encode_columns(train_set_dropped, test_set_dropped, label)
+        train_set_dropped, test_set_dropped = drop_unwanted_column(train_set, test_set, columns_to_drop)
+        save_data(train_set_dropped, dropped_columns_path_train)
+
+        train_set_scaled, test_set_scaled = scale_data(train_set_dropped, test_set_dropped)
+        train_set_preprocessed, test_set_preprocessed = encode_columns(train_set_scaled, test_set_scaled, label)
 
         processed_path = os.path.join('data','processed')
         os.makedirs(processed_path)
