@@ -50,8 +50,8 @@ stages:
       nfiles: 2
     - path: income_classification/modeling/model_training.py
       hash: md5
-      md5: a97c66219821c35729cfa419f32cd00a
-      size: 4296
+      md5: a9bc6d43b060cc2ba4e7114010f0e3ad
+      size: 4289
     params:
       params.yaml:
         model_training.learning_rate: 0.2
@@ -60,8 +60,8 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 31dc202869c3462c7086ce0252435146
-      size: 204596
+      md5: 339eb5eb53339b2ab4c2a3e0deef7113
+      size: 204597
   model_evaluation:
     cmd: python -m income_classification.modeling.model_evaluation
     deps:
@@ -76,5 +76,5 @@ stages:
       size: 4977
     - path: models/model.pkl
       hash: md5
-      md5: 31dc202869c3462c7086ce0252435146
-      size: 204596
+      md5: 339eb5eb53339b2ab4c2a3e0deef7113
+      size: 204597

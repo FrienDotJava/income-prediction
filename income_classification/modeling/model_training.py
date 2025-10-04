@@ -73,7 +73,7 @@ def create_pipeline(train_set_dropped: pd.DataFrame, model_path: str) -> Pipelin
 
         pipe.fit(X, y)
 
-        joblib.dump(pipe, "models/pipeline_model.pkl")
+        joblib.dump(pipe, "pipeline_model.pkl")
         print("Saved pipeline_model.pkl")
     except Exception as e:
         raise Exception(f"Error creating pipeline: {e}")
