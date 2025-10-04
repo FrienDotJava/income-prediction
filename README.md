@@ -4,6 +4,8 @@
 
 ---
 
+Try it here: https://income-prediction1.streamlit.app/
+
 ## 📌 Project goals
 
 - Train solid baseline & boosted tree models for the Adult/Census Income task (binary classification >$50K).
