@@ -9,7 +9,9 @@ def load_model():
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("data/interim/cleaned_data.csv")
+    url = "https://dagshub.com/FrienDotJava/income-prediction/raw/main/data/interim/cleaned_data.csv"
+    df = pd.read_csv(url)
+    return df
 
 st.header("🔍 Interactive Dataset Explorer")
 
